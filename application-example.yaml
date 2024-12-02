@@ -1,0 +1,57 @@
+# 项目相关配置
+isme-go:
+  # 名称
+  name: atom-go
+  # 域名
+  domain: localhost:3000
+  # 是否启用SSL
+  ssl: false
+  # 资源路径
+  publicPath: public/
+  # 文件上传路径
+  uploadPath: public/storage/
+  # 开发环境配置
+  server:
+    # 服务器的HTTP端口，默认为3000
+    port: 3000
+    # 模式，可选值：debug、release、test
+    mode: debug
+
+# 数据库配置
+mysql:
+  # 地址
+  host: localhost
+  # 端口，默认为3306
+  port: 3306
+  # 数据库名称
+  database: isme-go
+  # 用户名
+  username: root
+  # 密码
+  password: root
+  # 编码
+  charset: utf8mb4
+  # 连接池最大连接数
+  maxIdleConns: 10
+  # 连接池最大打开连接数
+  maxOpenConns: 100
+
+# redis配置
+redis:
+  # 地址
+  host: localhost
+  # 端口，默认为6379
+  port: 6379
+  # 数据库索引
+  database: 0
+  # 密码
+  password:
+
+# token配置
+token:
+  # 令牌自定义标识
+  header: Authorization
+  # 令牌密钥
+  secret: abcdefghijklmnopqrstuvwxyz
+  # 令牌有效期（默认30分钟）
+  expireTime: 30
