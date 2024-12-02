@@ -8,7 +8,7 @@ type UserTokenResponse struct {
 	UserType string `json:"userType"`
 	Username string `json:"username"`
 	Nickname string `json:"nickname"`
-	Password string `json:"password"`
+	Password string `json:"-"`
 	Status   string `json:"status"`
 }
 
