@@ -47,17 +47,24 @@ cp application-example.yaml application.yaml
 ```
 ###### 修改 `application.yaml` 数据库配置
 ``` yaml
+# 数据库配置
 mysql:
-	# 地址
-	host: localhost
-	# 端口，默认为3306
-	port: 3306
-	# 数据库名称
-	database: isme-go
-	# 用户名
-	username: root
-	# 密码
-	password: root
+  # 地址
+  host: localhost
+  # 端口，默认为3306
+  port: 3306
+  # 数据库名称
+  database: isme-go
+  # 用户名
+  username: root
+  # 密码
+  password: root
+  # 编码
+  charset: utf8mb4
+  # 连接池最大连接数
+  maxIdleConns: 10
+  # 连接池最大打开连接数
+  maxOpenConns: 100
 ```
 ###### 启动项目
 ```
