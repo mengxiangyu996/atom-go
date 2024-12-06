@@ -62,6 +62,7 @@ type Error struct {
 
 // NewError creates a new error response
 func NewError() *Error {
+
 	return &Error{
 		Response: Response{
 			Code:    10500,
