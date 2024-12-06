@@ -27,6 +27,7 @@
 
 ### 开发环境
 > golang >= 1.18
+> mysql >= 5.7
 
 ### 快速开始
 ###### clone 项目
@@ -54,7 +55,7 @@ mysql:
   # 端口，默认为3306
   port: 3306
   # 数据库名称
-  database: isme-go
+  database: atom-go
   # 用户名
   username: root
   # 密码
