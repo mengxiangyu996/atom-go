@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 	PRIMARY KEY (`user_id`) USING BTREE
 )
 COMMENT='用户表'
-COLLATE='utf8mb4_0900_ai_ci'
+COLLATE='utf8mb4_general_ci'
 ENGINE=InnoDB;
 
 -- ----------------------------
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `role` (
 	PRIMARY KEY (`role_id`) USING BTREE
 )
 COMMENT='角色表'
-COLLATE='utf8mb4_0900_ai_ci'
+COLLATE='utf8mb4_general_ci'
 ENGINE=InnoDB;
 
 -- ----------------------------
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `menu` (
 	PRIMARY KEY (`menu_id`) USING BTREE
 )
 COMMENT='菜单权限表'
-COLLATE='utf8mb4_0900_ai_ci'
+COLLATE='utf8mb4_general_ci'
 ENGINE=InnoDB;
 
 -- ----------------------------
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `user_role` (
 	PRIMARY KEY (`user_id`, `role_id`) USING BTREE
 )
 COMMENT='用户角色表'
-COLLATE='utf8mb4_0900_ai_ci'
+COLLATE='utf8mb4_general_ci'
 ENGINE=InnoDB;
 
 -- ----------------------------
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `role_menu` (
 	PRIMARY KEY (`role_id`, `menu_id`) USING BTREE
 )
 COMMENT='角色菜单权限表'
-COLLATE='utf8mb4_0900_ai_ci'
+COLLATE='utf8mb4_general_ci'
 ENGINE=InnoDB;
 
 -- ----------------------------
@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS `login_log` (
 	PRIMARY KEY (`login_log_id`) USING BTREE
 )
 COMMENT='登录日志表'
-COLLATE='utf8mb4_0900_ai_ci'
+COLLATE='utf8mb4_general_ci'
 ENGINE=InnoDB;
 
 -- ----------------------------
@@ -132,5 +132,5 @@ CREATE TABLE IF NOT EXISTS `operation_log` (
 	PRIMARY KEY (`operation_log_id`) USING BTREE
 )
 COMMENT='操作日志表'
-COLLATE='utf8mb4_0900_ai_ci'
+COLLATE='utf8mb4_general_ci'
 ENGINE=InnoDB;
