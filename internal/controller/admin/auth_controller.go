@@ -28,7 +28,7 @@ func (*AuthController) Captcha(ctx *gin.Context) {
 	response.NewSuccess().SetData(dto.CaptchaResponse{
 		CaptchaId:    id,
 		CaptchaImage: b64s,
-	}).Send(ctx)
+	}).Json(ctx)
 }
 
 // 登录
@@ -37,12 +37,12 @@ func (*AuthController) Login(ctx *gin.Context) {
 	var param dto.LoginRequest
 
 	if err := ctx.ShouldBindJSON(&param); err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
 	if err := validator.LoginValidator(&param); err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		go (&logger.LoginLogger{
 			Username:  param.Username,
 			Ip:        ctx.ClientIP(),
@@ -56,7 +56,7 @@ func (*AuthController) Login(ctx *gin.Context) {
 
 	captcha := captcha.NewCaptcha()
 	if !captcha.Verify(param.CaptchaId, param.CaptchaCode) {
-		response.NewError().SetMessage("验证码错误").Send(ctx)
+		response.NewError().SetMessage("验证码错误").Json(ctx)
 		go (&logger.LoginLogger{
 			Username:  param.Username,
 			Ip:        ctx.ClientIP(),
@@ -70,7 +70,7 @@ func (*AuthController) Login(ctx *gin.Context) {
 
 	user := (&service.UserService{}).GetUserInfoByUsername(param.Username)
 	if user.UserId <= 0 || user.Status != "0" {
-		response.NewError().SetMessage("用户不存在或被禁用").Send(ctx)
+		response.NewError().SetMessage("用户不存在或被禁用").Json(ctx)
 		go (&logger.LoginLogger{
 			Username:  param.Username,
 			Ip:        ctx.ClientIP(),
@@ -100,7 +100,7 @@ func (*AuthController) Login(ctx *gin.Context) {
 		LoginTime: datetime.Datetime{Time: time.Now()},
 	}).Insert()
 
-	response.NewSuccess().SetData(token).Send(ctx)
+	response.NewSuccess().SetData(token).Json(ctx)
 }
 
 // 获取授权用户信息
@@ -110,7 +110,7 @@ func (*AuthController) GetUserInfo(ctx *gin.Context) {
 
 	user := (&service.UserService{}).GetUserInfoByUserId(userId)
 
-	response.NewSuccess().SetData(user).Send(ctx)
+	response.NewSuccess().SetData(user).Json(ctx)
 }
 
 // 获取授权用户菜单权限
@@ -142,7 +142,7 @@ func (*AuthController) GetUserMenus(ctx *gin.Context) {
 	// 菜单权限列表转为树形结构
 	tree := (&service.MenuService{}).MenuListToTree(menus, 0)
 
-	response.NewSuccess().SetData(tree).Send(ctx)
+	response.NewSuccess().SetData(tree).Json(ctx)
 }
 
 // 更新个人信息
@@ -151,12 +151,12 @@ func (*AuthController) UpdateInfo(ctx *gin.Context) {
 	var param dto.SaveUserRequest
 
 	if err := ctx.ShouldBindJSON(&param); err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
 	if err := validator.UpdateInfoValidator(&param); err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
@@ -165,7 +165,7 @@ func (*AuthController) UpdateInfo(ctx *gin.Context) {
 
 	if param.Username != "" {
 		if user := (&service.UserService{}).GetUserInfoByUsername(param.Username); user.UserId > 0 && user.UserId != param.UserId {
-			response.NewError().SetMessage("用户名已存在").Send(ctx)
+			response.NewError().SetMessage("用户名已存在").Json(ctx)
 			return
 		}
 	}
@@ -178,9 +178,9 @@ func (*AuthController) UpdateInfo(ctx *gin.Context) {
 	param.UserType = ""
 
 	if err := (&service.UserService{}).UpdateUserByUserId(&param); err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
-	response.NewSuccess().Send(ctx)
+	response.NewSuccess().Json(ctx)
 }

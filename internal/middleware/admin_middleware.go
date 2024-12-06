@@ -20,13 +20,13 @@ func AdminAuthMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		adminClaims, err := token.ParseAdminToken(ctx)
 		if err != nil {
-			response.NewError().SetCode(10401).SetMessage(err.Error()).Send(ctx)
+			response.NewError().SetCode(10401).SetMessage(err.Error()).Json(ctx)
 			ctx.Abort()
 			return
 		}
 
 		if adminClaims.Subject != "admin" {
-			response.NewError().SetCode(10401).SetMessage("用户类型错误").Send(ctx)
+			response.NewError().SetCode(10401).SetMessage("用户类型错误").Json(ctx)
 			ctx.Abort()
 			return
 		}
@@ -41,14 +41,14 @@ func AdminAuthMiddleware() gin.HandlerFunc {
 		}
 
 		if adminClaims.Status != "0" {
-			response.NewError().SetCode(10401).SetMessage("用户被禁用").Send(ctx)
+			response.NewError().SetCode(10401).SetMessage("用户被禁用").Json(ctx)
 			ctx.Abort()
 			return
 		}
 
 		menu := (&service.MenuService{}).GetMenuByPathAndMethod(ctx.Request.URL.Path, ctx.Request.Method)
 		if menu.MenuId <= 0 {
-			response.NewError().SetCode(10401).SetMessage("请求权限不存在").Send(ctx)
+			response.NewError().SetCode(10401).SetMessage("请求权限不存在").Json(ctx)
 			ctx.Abort()
 			return
 		}
@@ -56,13 +56,13 @@ func AdminAuthMiddleware() gin.HandlerFunc {
 		// 鉴权逻辑
 		roleIds := (&service.UserRoleService{}).GetRoleIdsByUserIds([]int{adminClaims.UserId})
 		if len(roleIds) == 0 {
-			response.NewError().SetCode(10401).SetMessage("用户无角色权限").Send(ctx)
+			response.NewError().SetCode(10401).SetMessage("用户无角色权限").Json(ctx)
 			ctx.Abort()
 			return
 		}
 
 		if !(&service.RoleMenuService{}).IsBindRoleMenu(roleIds, menu.MenuId) {
-			response.NewError().SetCode(10401).SetMessage("用户无请求权限").Send(ctx)
+			response.NewError().SetCode(10401).SetMessage("用户无请求权限").Json(ctx)
 			ctx.Abort()
 			return
 		}

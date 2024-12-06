@@ -17,7 +17,7 @@ func (*LoginLogController) GetLoginLogPage(ctx *gin.Context) {
 	var param dto.GetLoginLogPageRequest
 
 	if err := ctx.ShouldBindQuery(&param); err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
@@ -26,5 +26,5 @@ func (*LoginLogController) GetLoginLogPage(ctx *gin.Context) {
 	response.NewSuccess().SetData(dto.PageResponse{
 		List:  loginLogs,
 		Total: total,
-	}).Send(ctx)
+	}).Json(ctx)
 }

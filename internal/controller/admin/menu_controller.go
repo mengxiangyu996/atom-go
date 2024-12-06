@@ -18,7 +18,7 @@ func (*MenuController) GetMenuTree(ctx *gin.Context) {
 	var param dto.GetMenuListRequest
 
 	if err := ctx.ShouldBindQuery(&param); err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
@@ -26,7 +26,7 @@ func (*MenuController) GetMenuTree(ctx *gin.Context) {
 
 	tree := (&service.MenuService{}).MenuListToTree(menus, 0)
 
-	response.NewSuccess().SetData(tree).Send(ctx)
+	response.NewSuccess().SetData(tree).Json(ctx)
 }
 
 // 获取菜单权限详情
@@ -35,13 +35,13 @@ func (*MenuController) GetMenuInfo(ctx *gin.Context) {
 	var param dto.MenuIdRequest
 
 	if err := ctx.ShouldBindQuery(&param); err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
 	menu := (&service.MenuService{}).GetMenuInfoByMenuId(param.MenuId)
 
-	response.NewSuccess().SetData(menu).Send(ctx)
+	response.NewSuccess().SetData(menu).Json(ctx)
 }
 
 // 创建菜单权限
@@ -50,18 +50,18 @@ func (*MenuController) CreateMenu(ctx *gin.Context) {
 	var param dto.SaveMenuRequest
 
 	if err := ctx.ShouldBindJSON(&param); err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
 	if err := validator.CreateMenuValidator(&param); err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
 	if param.Path != "" || param.Method != "" {
 		if menu := (&service.MenuService{}).GetMenuByPathAndMethod(param.Path, param.Method); menu.MenuId > 0 {
-			response.NewError().SetMessage("菜单权限已存在").Send(ctx)
+			response.NewError().SetMessage("菜单权限已存在").Json(ctx)
 			return
 		}
 	}
@@ -69,11 +69,11 @@ func (*MenuController) CreateMenu(ctx *gin.Context) {
 	param.CreateBy = ctx.GetString("nickname")
 
 	if err := (&service.MenuService{}).CreateMenu(&param); err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
-	response.NewSuccess().Send(ctx)
+	response.NewSuccess().Json(ctx)
 }
 
 // 更新菜单权限
@@ -82,18 +82,18 @@ func (*MenuController) UpdateMenu(ctx *gin.Context) {
 	var param dto.SaveMenuRequest
 
 	if err := ctx.ShouldBindJSON(&param); err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
 	if err := validator.UpdateMenuValidator(&param); err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
 	if param.Path != "" || param.Method != "" {
 		if menu := (&service.MenuService{}).GetMenuByPathAndMethod(param.Path, param.Method); menu.MenuId > 0 && menu.MenuId != param.MenuId {
-			response.NewError().SetMessage("菜单权限已存在").Send(ctx)
+			response.NewError().SetMessage("菜单权限已存在").Json(ctx)
 			return
 		}
 	}
@@ -101,11 +101,11 @@ func (*MenuController) UpdateMenu(ctx *gin.Context) {
 	param.UpdateBy = ctx.GetString("nickname")
 
 	if err := (&service.MenuService{}).UpdateMenuByMenuId(&param); err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
-	response.NewSuccess().Send(ctx)
+	response.NewSuccess().Json(ctx)
 }
 
 // 删除菜单权限
@@ -114,14 +114,14 @@ func (*MenuController) DeleteMenu(ctx *gin.Context) {
 	var param dto.MenuIdRequest
 
 	if err := ctx.ShouldBindJSON(&param); err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
 	if err := (&service.MenuService{}).DeleteMenuByMenuId(param.MenuId); err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
-	response.NewSuccess().Send(ctx)
+	response.NewSuccess().Json(ctx)
 }

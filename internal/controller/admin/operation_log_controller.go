@@ -17,7 +17,7 @@ func (*OperationLogController) GetOperationLogPage(ctx *gin.Context) {
 	var param dto.GetOperationLogPageRequest
 
 	if err := ctx.ShouldBindQuery(&param); err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
@@ -26,7 +26,7 @@ func (*OperationLogController) GetOperationLogPage(ctx *gin.Context) {
 	response.NewSuccess().SetData(dto.PageResponse{
 		List:  operationLogs,
 		Total: total,
-	}).Send(ctx)
+	}).Json(ctx)
 }
 
 // 获取操作日志详情
@@ -35,11 +35,11 @@ func (*OperationLogController) GetOperationLogInfo(ctx *gin.Context) {
 	var param dto.OperationLogIdRequest
 
 	if err := ctx.ShouldBindQuery(&param); err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
 	operationLog := (&service.OperationLogService{}).GetOperationLogInfo(param.OperationLogId)
 
-	response.NewSuccess().SetData(operationLog).Send(ctx)
+	response.NewSuccess().SetData(operationLog).Json(ctx)
 }

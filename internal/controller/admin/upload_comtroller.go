@@ -16,19 +16,19 @@ func (u *UploadController) UploadFile(ctx *gin.Context) {
 
 	fileHeader, err := ctx.FormFile("file")
 	if err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
 	file, err := fileHeader.Open()
 	if err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
 	fileContent, err := ioutil.ReadAll(file)
 	if err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
@@ -56,11 +56,11 @@ func (u *UploadController) UploadFile(ctx *gin.Context) {
 	}).Save()
 
 	if err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
-	response.NewSuccess().SetData(fileResult).Send(ctx)
+	response.NewSuccess().SetData(fileResult).Json(ctx)
 }
 
 // 上传图片
@@ -68,19 +68,19 @@ func (u *UploadController) UploadImage(ctx *gin.Context) {
 
 	fileHeader, err := ctx.FormFile("file")
 	if err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
 	file, err := fileHeader.Open()
 	if err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
 	fileContent, err := ioutil.ReadAll(file)
 	if err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
@@ -98,9 +98,9 @@ func (u *UploadController) UploadImage(ctx *gin.Context) {
 	}).Save()
 
 	if err != nil {
-		response.NewError().SetMessage(err.Error()).Send(ctx)
+		response.NewError().SetMessage(err.Error()).Json(ctx)
 		return
 	}
 
-	response.NewSuccess().SetData(fileResult).Send(ctx)
+	response.NewSuccess().SetData(fileResult).Json(ctx)
 }
