@@ -23,8 +23,5 @@ func (*LoginLogController) GetLoginLogPage(ctx *gin.Context) {
 
 	loginLogs, total := (&service.LoginLogService{}).GetLoginLogPage(&param)
 
-	response.NewSuccess().SetData(dto.PageResponse{
-		List:  loginLogs,
-		Total: total,
-	}).Json(ctx)
+	response.NewSuccess().SetPageData(loginLogs, total).Json(ctx)
 }

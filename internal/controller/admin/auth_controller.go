@@ -25,7 +25,7 @@ func (*AuthController) Captcha(ctx *gin.Context) {
 
 	id, b64s := captcha.Generate()
 
-	response.NewSuccess().SetData(dto.CaptchaResponse{
+	response.NewSuccess().SetData("data", dto.CaptchaResponse{
 		CaptchaId:    id,
 		CaptchaImage: b64s,
 	}).Json(ctx)
@@ -100,7 +100,7 @@ func (*AuthController) Login(ctx *gin.Context) {
 		LoginTime: datetime.Datetime{Time: time.Now()},
 	}).Insert()
 
-	response.NewSuccess().SetData(token).Json(ctx)
+	response.NewSuccess().SetData("data", token).Json(ctx)
 }
 
 // 获取授权用户信息
@@ -110,7 +110,7 @@ func (*AuthController) GetUserInfo(ctx *gin.Context) {
 
 	user := (&service.UserService{}).GetUserInfoByUserId(userId)
 
-	response.NewSuccess().SetData(user).Json(ctx)
+	response.NewSuccess().SetData("data", user).Json(ctx)
 }
 
 // 获取授权用户菜单权限
@@ -142,7 +142,7 @@ func (*AuthController) GetUserMenus(ctx *gin.Context) {
 	// 菜单权限列表转为树形结构
 	tree := (&service.MenuService{}).MenuListToTree(menus, 0)
 
-	response.NewSuccess().SetData(tree).Json(ctx)
+	response.NewSuccess().SetData("data", tree).Json(ctx)
 }
 
 // 更新个人信息

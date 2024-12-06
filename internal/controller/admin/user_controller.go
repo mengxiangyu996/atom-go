@@ -25,10 +25,7 @@ func (*UserController) GetUserPage(ctx *gin.Context) {
 
 	users, total := (&service.UserService{}).GetUserPage(&param)
 
-	response.NewSuccess().SetData(dto.PageResponse{
-		List:  users,
-		Total: total,
-	}).Json(ctx)
+	response.NewSuccess().SetPageData(users, total).Json(ctx)
 }
 
 // 获取用户详情
@@ -43,7 +40,7 @@ func (*UserController) GetUserInfo(ctx *gin.Context) {
 
 	user := (&service.UserService{}).GetUserInfoByUserId(param.UserId)
 
-	response.NewSuccess().SetData(user).Json(ctx)
+	response.NewSuccess().SetData("data", user).Json(ctx)
 }
 
 // 创建用户

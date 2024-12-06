@@ -23,10 +23,7 @@ func (*OperationLogController) GetOperationLogPage(ctx *gin.Context) {
 
 	operationLogs, total := (&service.OperationLogService{}).GetOperationLogPage(&param)
 
-	response.NewSuccess().SetData(dto.PageResponse{
-		List:  operationLogs,
-		Total: total,
-	}).Json(ctx)
+	response.NewSuccess().SetPageData(operationLogs, total).Json(ctx)
 }
 
 // 获取操作日志详情
@@ -41,5 +38,5 @@ func (*OperationLogController) GetOperationLogInfo(ctx *gin.Context) {
 
 	operationLog := (&service.OperationLogService{}).GetOperationLogInfo(param.OperationLogId)
 
-	response.NewSuccess().SetData(operationLog).Json(ctx)
+	response.NewSuccess().SetData("data", operationLog).Json(ctx)
 }

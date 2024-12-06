@@ -60,7 +60,7 @@ func (u *UploadController) UploadFile(ctx *gin.Context) {
 		return
 	}
 
-	response.NewSuccess().SetData(fileResult).Json(ctx)
+	response.NewSuccess().SetData("data", fileResult).Json(ctx)
 }
 
 // 上传图片
@@ -102,5 +102,5 @@ func (u *UploadController) UploadImage(ctx *gin.Context) {
 		return
 	}
 
-	response.NewSuccess().SetData(fileResult).Json(ctx)
+	response.NewSuccess().SetData("data", fileResult).Json(ctx)
 }

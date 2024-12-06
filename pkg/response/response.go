@@ -2,80 +2,95 @@ package response
 
 import "github.com/gin-gonic/gin"
 
-// Response contains common fields and methods for all responses
+// 响应
 type Response struct {
-	Code    int         `json:"code"`
-	Message string      `json:"message"`
-	Data    interface{} `json:"data,omitempty"`
+	Code    int                    `json:"code"`
+	Message string                 `json:"message"`
+	Data    map[string]interface{} `json:"-"`
 }
 
-// SetCode sets the response code.
-func (b *Response) SetCode(code int) *Response {
+// 初始化成功响应
+func NewSuccess() *Response {
 
-	b.Code = code
-	
-	return b
-}
-
-// SetMessage sets the response message
-func (b *Response) SetMessage(message string) *Response {
-
-	b.Message = message
-
-	return b
-}
-
-// SetData sets the response data
-func (b *Response) SetData(data interface{}) *Response {
-
-	b.Data = data
-
-	return b
-}
-
-// Send sends the response to the client
-func (b *Response) Json(ctx *gin.Context) {
-
-	ctx.JSON(200, b)
-}
-
-// Success represents a successful response
-type Success struct {
-	Response
-}
-
-// NewSuccess creates a new success response
-func NewSuccess() *Success {
-
-	return &Success{
-		Response: Response{
-			Code:    10200,
-			Message: "success",
-		},
+	return &Response{
+		Code:    10200,
+		Message: "success",
+		Data:    make(map[string]interface{}),
 	}
 }
 
-// Error represents an error response
-type Error struct {
-	Response
-}
+// 初始化失败响应
+func NewError() *Response {
 
-// NewError creates a new error response
-func NewError() *Error {
-
-	return &Error{
-		Response: Response{
-			Code:    10500,
-			Message: "error",
-		},
+	return &Response{
+		Code:    10500,
+		Message: "fail",
+		Data:    make(map[string]interface{}),
 	}
 }
 
-// Send is a method that all responses must implement to send the response
-func (s *Success) Json(ctx *gin.Context) {
-	s.Response.Json(ctx)
+// 设置响应码
+func (r *Response) SetCode(code int) *Response {
+
+	r.Code = code
+
+	return r
 }
 
-func (e *Error) Json(ctx *gin.Context) {
-	e.Response.Json(ctx)
+// 设置响应信息
+func (r *Response) SetMessage(message string) *Response {
+
+	r.Message = message
+
+	return r
+}
+
+// 设置响应数据
+func (r *Response) SetData(key string, value interface{}) *Response {
+
+	if key == "code" || key == "msg" {
+		return r
+	}
+
+	r.Data[key] = value
+
+	return r
+}
+
+// 设置分页响应数据
+func (r *Response) SetPageData(rows interface{}, total int) *Response {
+
+	r.Data["rows"] = rows
+	r.Data["total"] = total
+
+	return r
+}
+
+// 设置响应数据
+func (r *Response) SetDataMap(data map[string]interface{}) *Response {
+
+	for key, value := range data {
+		if key == "code" || key == "msg" {
+			continue
+		}
+
+		r.Data[key] = value
+	}
+
+	return r
+}
+
+// 序列化返回
+func (r *Response) Json(ctx *gin.Context) {
+
+	response := gin.H{
+		"code":    r.Code,
+		"message": r.Message,
+	}
+
+	for key, value := range r.Data {
+		response[key] = value
+	}
+
+	ctx.JSON(200, response)
 }

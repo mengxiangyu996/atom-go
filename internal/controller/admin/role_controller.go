@@ -24,10 +24,7 @@ func (*RoleController) GetRolePage(ctx *gin.Context) {
 
 	roles, total := (&service.RoleService{}).GetRoleList(&param)
 
-	response.NewSuccess().SetData(dto.PageResponse{
-		List:  roles,
-		Total: total,
-	}).Json(ctx)
+	response.NewSuccess().SetPageData(roles, total).Json(ctx)
 }
 
 // 获取角色详情
@@ -42,7 +39,7 @@ func (*RoleController) GetRoleInfo(ctx *gin.Context) {
 
 	role := (&service.RoleService{}).GetRoleInfoByRoleId(param.RoleId)
 
-	response.NewSuccess().SetData(role).Json(ctx)
+	response.NewSuccess().SetData("data", role).Json(ctx)
 }
 
 // 创建角色
@@ -165,5 +162,5 @@ func (*RoleController) GetRoleBoundMenuTree(ctx *gin.Context) {
 
 	tree := (&service.MenuService{}).MenuListToTree(menus, 0)
 
-	response.NewSuccess().SetData(tree).Json(ctx)
+	response.NewSuccess().SetData("data", tree).Json(ctx)
 }

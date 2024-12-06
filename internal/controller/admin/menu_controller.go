@@ -26,7 +26,7 @@ func (*MenuController) GetMenuTree(ctx *gin.Context) {
 
 	tree := (&service.MenuService{}).MenuListToTree(menus, 0)
 
-	response.NewSuccess().SetData(tree).Json(ctx)
+	response.NewSuccess().SetData("data", tree).Json(ctx)
 }
 
 // 获取菜单权限详情
@@ -41,7 +41,7 @@ func (*MenuController) GetMenuInfo(ctx *gin.Context) {
 
 	menu := (&service.MenuService{}).GetMenuInfoByMenuId(param.MenuId)
 
-	response.NewSuccess().SetData(menu).Json(ctx)
+	response.NewSuccess().SetData("data", menu).Json(ctx)
 }
 
 // 创建菜单权限
