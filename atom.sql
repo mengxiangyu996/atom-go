@@ -1,7 +1,7 @@
 -- ----------------------------
 -- 用户表
 -- ----------------------------
-CREATE TABLE `user` (
+CREATE TABLE IF NOT EXISTS `user` (
 	`user_id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '用户id',
 	`user_type` VARCHAR(50) NOT NULL DEFAULT 'USER' COMMENT '用户类型：USER-普通用户；SUPER_ADMIN-超级管理员' COLLATE 'utf8mb4_0900_ai_ci',
 	`username` VARCHAR(50) NOT NULL COMMENT '用户名' COLLATE 'utf8mb4_0900_ai_ci',
@@ -33,7 +33,7 @@ INSERT INTO `user` (`user_id`, `user_type`, `username`, `password`, `nickname`, 
 -- ----------------------------
 -- 角色表
 -- ----------------------------
-CREATE TABLE `role` (
+CREATE TABLE IF NOT EXISTS `role` (
 	`role_id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '角色id',
 	`role_name` VARCHAR(50) NOT NULL COMMENT '角色名称' COLLATE 'utf8mb4_0900_ai_ci',
 	`status` CHAR(1) NOT NULL DEFAULT '0' COMMENT '状态：0-正常；1-停用' COLLATE 'utf8mb4_0900_ai_ci',
@@ -51,7 +51,7 @@ ENGINE=InnoDB;
 -- ----------------------------
 -- 菜单权限表
 -- ----------------------------
-CREATE TABLE `menu` (
+CREATE TABLE IF NOT EXISTS `menu` (
 	`menu_id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '菜单id',
 	`menu_name` VARCHAR(50) NOT NULL COMMENT '菜单名称' COLLATE 'utf8mb4_0900_ai_ci',
 	`parent_id` INT(10) NOT NULL DEFAULT '0' COMMENT '父菜单id',
@@ -76,7 +76,7 @@ ENGINE=InnoDB;
 -- ----------------------------
 -- 用户角色表
 -- ----------------------------
-CREATE TABLE `user_role` (
+CREATE TABLE IF NOT EXISTS `user_role` (
 	`user_id` INT(10) NOT NULL COMMENT '用户id',
 	`role_id` INT(10) NOT NULL COMMENT '角色id',
 	PRIMARY KEY (`user_id`, `role_id`) USING BTREE
@@ -88,7 +88,7 @@ ENGINE=InnoDB;
 -- ----------------------------
 -- 角色菜单权限表
 -- ----------------------------
-CREATE TABLE `role_menu` (
+CREATE TABLE IF NOT EXISTS `role_menu` (
 	`role_id` INT(10) NOT NULL COMMENT '角色id',
 	`menu_id` INT(10) NOT NULL COMMENT '菜单权限id',
 	PRIMARY KEY (`role_id`, `menu_id`) USING BTREE
@@ -100,7 +100,7 @@ ENGINE=InnoDB;
 -- ----------------------------
 -- 登录日志表
 -- ----------------------------
-CREATE TABLE `login_log` (
+CREATE TABLE IF NOT EXISTS `login_log` (
 	`login_log_id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '登录日志id',
 	`login_username` VARCHAR(50) NOT NULL COMMENT '登录用户名' COLLATE 'utf8mb4_0900_ai_ci',
 	`login_ip` VARCHAR(50) NOT NULL COMMENT '登录ip地址' COLLATE 'utf8mb4_0900_ai_ci',
@@ -119,7 +119,7 @@ ENGINE=InnoDB;
 -- ----------------------------
 -- 操作日志表
 -- ----------------------------
-CREATE TABLE `operation_log` (
+CREATE TABLE IF NOT EXISTS `operation_log` (
 	`operation_log_id` INT(10) NOT NULL AUTO_INCREMENT COMMENT '操作日志id',
 	`path` VARCHAR(255) NOT NULL COMMENT '请求地址路径' COLLATE 'utf8mb4_0900_ai_ci',
 	`method` VARCHAR(10) NOT NULL COMMENT '请求方式' COLLATE 'utf8mb4_0900_ai_ci',
