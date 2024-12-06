@@ -1,5 +1,5 @@
 # 项目相关配置
-isme-go:
+app:
   # 名称
   name: atom-go
   # 域名
