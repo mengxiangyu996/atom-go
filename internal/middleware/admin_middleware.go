@@ -106,7 +106,7 @@ func AdminOperationLogMiddleware() gin.HandlerFunc {
 			Body:           bytes.NewBufferString(""),
 		}
 
-		var paramData map[string]interface{}
+		paramData := make(map[string]interface{}, 0)
 		ctx.ShouldBind(&paramData)
 
 		// 因ctx.ShouldBind后，请求体的数据流会被消耗完毕，需要将缓存的请求体重新赋值给ctx.Request.Body
