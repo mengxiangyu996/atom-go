@@ -26,11 +26,12 @@ type UploadOption func(*Config)
 
 // 上传配置
 type Config struct {
-	Driver    string   // 上传驱动
-	SavePath  string   // 保存路径
-	UrlPath   string   // 访问地址路径
-	LimitSize int      // 限制文件大小
-	LimitType []string // 限制文件类型
+	Driver        string   // 上传驱动
+	SavePath      string   // 保存路径
+	UrlPath       string   // 访问地址路径
+	LimitSize     int      // 限制文件大小
+	LimitType     []string // 限制文件类型
+	UseRandomName bool     // 使用随机文件名
 }
 
 // 文件信息
@@ -44,13 +45,13 @@ type File struct {
 
 // 返回结果
 type Result struct {
-	FileName   string `json:"fileName"`
-	RandomName string `json:"randomName"`
-	FileSize   int    `json:"fileSize"`
-	FileType   string `json:"fileType"`
-	SavePath   string `json:"savePath"`
-	UrlPath    string `json:"urlPath"`
-	Url        string `json:"url"`
+	OriginalName string `json:"originalName"`
+	FileName     string `json:"fileName"`
+	FileSize     int    `json:"fileSize"`
+	FileType     string `json:"fileType"`
+	SavePath     string `json:"savePath"`
+	UrlPath      string `json:"urlPath"`
+	Url          string `json:"url"`
 }
 
 // 初始化上传对象
@@ -60,9 +61,10 @@ func New(options ...UploadOption) *Upload {
 
 	// 配置默认驱动
 	config := &Config{
-		Driver:   UploadLocalDriver,
-		UrlPath:  config.Data.App.UploadPath + todayPath,
-		SavePath: config.Data.App.UploadPath + todayPath,
+		Driver:        UploadLocalDriver,
+		UrlPath:       config.Data.App.UploadPath + todayPath,
+		SavePath:      config.Data.App.UploadPath + todayPath,
+		UseRandomName: false,
 	}
 
 	for _, option := range options {
@@ -114,6 +116,14 @@ func SetLimitType(limitType []string) UploadOption {
 	}
 }
 
+// 使用随机文件名
+func UseRandomName(useRandomName bool) UploadOption {
+
+	return func(config *Config) {
+		config.UseRandomName = useRandomName
+	}
+}
+
 // 设置上传文件
 func (u *Upload) SetFile(file *File) *Upload {
 
@@ -149,7 +159,10 @@ func (u *Upload) Save() (*Result, error) {
 	}
 
 	// 拼接随机文件名
-	randomName := u.generateRandomName() + "." + fileName[1]
+	randomName := u.File.FileName
+	if u.Config.UseRandomName {
+		randomName = u.generateRandomName() + "." + fileName[1]
+	}
 
 	if err = u.checkLimitSize(); err != nil {
 		return nil, err
@@ -173,13 +186,13 @@ func (u *Upload) Save() (*Result, error) {
 	}
 
 	return &Result{
-		FileName:   u.File.FileName,
-		RandomName: randomName,
-		FileSize:   u.File.FileSize,
-		FileType:   u.File.FileType,
-		SavePath:   u.Config.SavePath,
-		UrlPath:    u.Config.UrlPath,
-		Url:        domain + "/" + u.Config.UrlPath + randomName,
+		OriginalName: u.File.FileName,
+		FileName:     randomName,
+		FileSize:     u.File.FileSize,
+		FileType:     u.File.FileType,
+		SavePath:     u.Config.SavePath,
+		UrlPath:      u.Config.UrlPath,
+		Url:          domain + "/" + u.Config.UrlPath + randomName,
 	}, err
 }
 
