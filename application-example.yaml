@@ -6,10 +6,8 @@ app:
   domain: localhost:3000
   # 是否启用SSL
   ssl: false
-  # 资源路径
-  publicPath: public/
   # 文件上传路径
-  uploadPath: public/storage/
+  storagePath: web/storage/
   # 开发环境配置
   server:
     # 服务器的HTTP端口，默认为3000

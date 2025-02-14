@@ -9,11 +9,10 @@ import (
 type Config struct {
 	// 项目配置
 	App struct {
-		Name       string `yaml:"name"`       // 项目名称
-		Domain     string `yaml:"domain"`     // 项目域名
-		SSL        bool   `yaml:"ssl"`        // 是否启用SSL
-		PublicPath string `yaml:"publicPath"` // 资源路径
-		UploadPath string `yaml:"uploadPath"` // 文件上传路径
+		Name        string `yaml:"name"`        // 项目名称
+		Domain      string `yaml:"domain"`      // 项目域名
+		SSL         bool   `yaml:"ssl"`         // 是否启用SSL
+		StoragePath string `yaml:"storagePath"` // 文件上传路径
 
 		// 服务器配置
 		Server struct {

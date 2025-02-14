@@ -62,8 +62,8 @@ func New(options ...UploadOption) *Upload {
 	// 配置默认驱动
 	config := &Config{
 		Driver:        UploadLocalDriver,
-		UrlPath:       config.Data.App.UploadPath + todayPath,
-		SavePath:      config.Data.App.UploadPath + todayPath,
+		UrlPath:       config.Data.App.StoragePath + todayPath,
+		SavePath:      config.Data.App.StoragePath + todayPath,
 		UseRandomName: false,
 	}
 
