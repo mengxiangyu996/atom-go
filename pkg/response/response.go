@@ -4,15 +4,17 @@ import "github.com/gin-gonic/gin"
 
 // 响应
 type Response struct {
-	Code    int                    `json:"code"`
-	Message string                 `json:"message"`
-	Data    map[string]interface{} `json:"-"`
+	Status  int
+	Code    int
+	Message string
+	Data    map[string]interface{}
 }
 
 // 初始化成功响应
 func NewSuccess() *Response {
 
 	return &Response{
+		Status:  200,
 		Code:    10200,
 		Message: "success",
 		Data:    make(map[string]interface{}),
@@ -23,10 +25,19 @@ func NewSuccess() *Response {
 func NewError() *Response {
 
 	return &Response{
+		Status:  200,
 		Code:    10500,
 		Message: "fail",
 		Data:    make(map[string]interface{}),
 	}
+}
+
+// 设置状态码
+func (r *Response) SetStatus(status int) *Response {
+
+	r.Status = status
+
+	return r
 }
 
 // 设置响应码
@@ -92,5 +103,5 @@ func (r *Response) Json(ctx *gin.Context) {
 		response[key] = value
 	}
 
-	ctx.JSON(200, response)
+	ctx.JSON(r.Status, response)
 }
